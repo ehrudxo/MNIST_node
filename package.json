@@ -1,0 +1,11 @@
+{
+  "name": "mnist_node",
+  "version": "1.0.0",
+  "description": "mnist node data using node canvas",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.spec.js"
+  },
+  "author": "keen",
+  "license": "MIT"
+}
