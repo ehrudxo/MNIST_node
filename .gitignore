@@ -1,0 +1,4 @@
+.DS_Store
+ouput
+node_modules
+MNIST_DATA
