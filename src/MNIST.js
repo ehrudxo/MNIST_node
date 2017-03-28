@@ -3,14 +3,15 @@ const fs = require('fs')
   , Image = Canvas.Image
   ,canvas = new Canvas(28, 28)
   ,ctx = canvas.getContext('2d');
+let images     = [];
 
 //http://stackoverflow.com/questions/25024179/reading-mnist-dataset-with-javascript-node-js
-function extract(imageSize =10){
-  const dataFileBuffer  = fs.readFileSync(__dirname + '/MNIST_DATA/train-images-idx3-ubyte');
-  const labelFileBuffer = fs.readFileSync(__dirname + '/MNIST_DATA/train-labels-idx1-ubyte');
-  let pixelValues     = [];
-  //59999
-  for (let image = 0; image <= imageSize; image++) {
+// x,y 가 바뀌어 있어서 변경
+function parse(imageSize =10){
+  const dataFileBuffer  = fs.readFileSync(__dirname + '/../MNIST_DATA/train-images-idx3-ubyte');
+  const labelFileBuffer = fs.readFileSync(__dirname + '/../MNIST_DATA/train-labels-idx1-ubyte');
+
+  for (let image = 0; image < imageSize; image++) {
       let pixels = [];
 
       for (let y = 0; y <= 27; y++) {
@@ -22,17 +23,24 @@ function extract(imageSize =10){
       let imageData  = {};
       imageData[JSON.stringify(labelFileBuffer[image + 8])] = pixels;
 
-      pixelValues.push(imageData);
+      images.push(imageData);
   }
-  return pixelValues;
+  return this;
 }
-function save(images){
-  images.forEach((image,index)=>draw(image,index));
+//저장. _draw 함수를 호출
+function save(){
+  let lastIndex
+  images.forEach((image,index)=>{
+    _draw(image,index)
+    lastIndex = index
+  });
+  return lastIndex + 1 ;
 }
-function draw(digits,index)
+//canvas에 draw
+function _draw(digits,index)
 {
   for(let key of Object.keys(digits)){
-    var out = fs.createWriteStream(__dirname + '/output/'+index+'-'+key+'.png');
+    var out = fs.createWriteStream(__dirname + '/../output/'+index+'-'+key+'.png');
     let digit = digits[key];
     var imageData = ctx.getImageData(0,0,28,28);
     for (var i = 0; i < digit.length; i++)
@@ -46,8 +54,8 @@ function draw(digits,index)
     out.write(canvas.toBuffer());
   }
 }
-module.exports.extract = extract;
+module.exports.parse = parse;
 module.exports.save = save;
-
+module.exports.images = images;
 
 // var draw =

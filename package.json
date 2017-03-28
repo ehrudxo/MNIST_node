@@ -4,8 +4,11 @@
   "description": "mnist node data using node canvas",
   "main": "index.js",
   "scripts": {
-    "test": "node index.spec.js"
+    "test": "mocha"
   },
   "author": "keen",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
 }
